@@ -16,7 +16,10 @@ Below problems are sorted according to their priority. Problem with highest prio
 
 1 -) Performance of validity check in file BoardLogic.java
 
-	Current system checks for validity of digits(if they are in range of 1-9), cells(3x3 pieces), columns and rows. Validate column, row and cell method use validatePartial(Integer[] ints) method to ensure that there is no duplicate numbers. But this method is works very inefficiently. Rather than using a hashset and come up with an O(n) algorithm, for each number, it checks all of the next numbers. This leads to an O(n^2) algorithm. 
+	Current system checks for validity of digits(if they are in range of 1-9), cells(3x3 pieces), columns and rows. 
+	Validate column, row and cell method use validatePartial(Integer[] ints) method to ensure that there is no duplicate numbers. 		But this method is works very inefficiently. 
+	Rather than using a hashset and come up with an O(n) algorithm, for each number, it checks all of the next numbers. 
+	This leads to an O(n^2) algorithm. 
 	Instead of this IsValid() algorithm, the proposed algorithm is; (Please note that we will also keep the list of coordinates that are erroneous)
 	
 	- have 3 arrays of hashmap (HashSet would be enough if we didn't have to keep the list of erroneous coordinates)
@@ -39,31 +42,47 @@ Below problems are sorted according to their priority. Problem with highest prio
 	 
 2 -) Always generating same puzzle.
 
-	Game is always generating same puzzle in a static way. That means every customer will only see the same puzzle every time they browse the webpage. There can be two ways of solving this problem. First one is generating a new valid sudoku puzzle whenever requested(procedurally generated). But since that can be time consuming, the second approach would be to have multiple pre-prepared sudoku puzzles in store, and return one of them randomly whenever a request comes. 
+	Game is always generating same puzzle in a static way. That means every customer will only see the same puzzle every time they browse the webpage. There can be two ways of solving this problem. 
+	First one is generating a new valid sudoku puzzle whenever requested(procedurally generated). 
+	But since that can be time consuming, the second approach would be to have multiple pre-prepared sudoku puzzles in store, and return one of them randomly whenever a request comes. 
 	
-	There are important things to keep in mind when creating a new sudoku puzzle. First of all it should be valid (each row, column and cell should have distinct numbers). It should be solvable, each location in board should have available number to put into them and each empty location's value should be deducible. It should only have single solution. And we need to be careful about difficulty of the puzzle.
+	There are important things to keep in mind when creating a new sudoku puzzle. 
+	First of all it should be valid (each row, column and cell should have distinct numbers). 
+	It should be solvable, each location in board should have available number to put into them and each empty location's value should be deducible. 
+	It should only have single solution. And we need to be careful about difficulty of the puzzle.
 	
 	Validity of the puzzle can be guaranteed with using HashSets. Difficulty of the puzzle can be determined by number of deductions the person need to make in order to solve the puzzle. There are different approaches in the literature. Some of them fill the entire board first and remove elements if the board is still solvable. Some of the approaches adds elements until the board is solvable.
 	
 3 -) Error list has duplicate items in file BoardLogic.java.
 
-	Currently we are recording erroneous coordinates using a LinkedList. Same coordinates i and j, can be erroneous for multiple reasons (row, column and cell) and we will have same coordinates up to three times in our list. Instead of LinkedList, a HashSet can be used to solve this problem.
+	Currently we are recording erroneous coordinates using a LinkedList. 
+	Same coordinates i and j, can be erroneous for multiple reasons (row, column and cell) and we will have same coordinates up to three times in our list. 
+	Instead of LinkedList, a HashSet can be used to solve this problem.
 	
 4 -) Error list has no "type of error" information in file BoardLogic.java. (related to problem 3)
 	
-	Currently error list is just a list of coordinates and no information about why they are erroneous is not attached to them. We can use a HashMap to keep this list. Each coordinate (combination of i and j) will be the key, and value will be the list of reasons why they are erroneous. This value can have up to three elements ("row", "column" and "cell").
+	Currently error list is just a list of coordinates and no information about why they are erroneous is not attached to them. 
+	We can use a HashMap to keep this list. Each coordinate (combination of i and j) will be the key, and value will be the list of reasons why they are erroneous. 
+	This value can have up to three elements ("row", "column" and "cell").
 	
 5- ) shouldErrorOnEmptyBoardFields() method will definitely fail in BoardTests.java
 	
-	Because isValid() method does not check if all elements are null. It simply skips null elements and works on actual integer values. and getBoardState(Board b) method does not do anything special if all elements are null. We can add special case in IsValid method to fix this problem.
+	Because isValid() method does not check if all elements are null. 
+	It simply skips null elements and works on actual integer values. and getBoardState(Board b) method does not do anything special if all elements are null. 
+	We can add special case in IsValid method to fix this problem.
 	
 6 -) shouldErrorOnInvalidBoardRow() and shouldErrorOnInvalidBoardColumn() methods in file BoardTest.java
 
-	These two methods test the system for row and column errors. But it uses coordinates that are also in the same cells. Program can have a working "cellCheck" method and its "rowCheck" and "columnCheck" methods may not be working. In this case, program will recognize the cell error, raise the exception, and test method will see this exception and falsely decide that program is running correctly. So this test method will fail. 
+	These two methods test the system for row and column errors. 
+	But it uses coordinates that are also in the same cells. 
+	Program can have a working "cellCheck" method and its "rowCheck" and "columnCheck" methods may not be working. 
+	In this case, program will recognize the cell error, raise the exception, and test method will see this exception and falsely decide that program is running correctly. So this test method will fail. 
 	
 	Instead for  "shouldErrorOnInvalidBoardRow()" method;
 	
-	It should check for some coordinates like "fields[0][0] = 1; fields[9][0] = 1;". Because they are not in the same cell, they are not in the same column, they are only in same row. This test will only pass if and only if program can check row errors correctly.
+	It should check for some coordinates like "fields[0][0] = 1; fields[9][0] = 1;". 
+	Because they are not in the same cell, they are not in the same column, they are only in same row. 
+	This test will only pass if and only if program can check row errors correctly.
 	
 	For  "shouldErrorOnInvalidBoardColumn()" method;
 	
@@ -71,7 +90,9 @@ Below problems are sorted according to their priority. Problem with highest prio
 
 7 -) "int cellCount = 3;" and "int length = 3;" statements in validateCell and ValidateCells method in file BoardLogic.java
 
-	If we are going to only support 9x9 sudoku samples, these lines are not a problem. But if we predict that we can add sudoku puzzles with different sizes in the future(like 4x4, 16x16,..), then these statements will cause an error. Instead of using a magic number like 3, we can call Math.sqrt(sudokuSize) method.
+	If we are going to only support 9x9 sudoku samples, these lines are not a problem. 
+	But if we predict that we can add sudoku puzzles with different sizes in the future(like 4x4, 16x16,..), then these statements will cause an error. 
+	Instead of using a magic number like 3, we can call Math.sqrt(sudokuSize) method.
 
 8 -) Multiple occurences of "b.getFields()[i][j]" in file BoardLogic.java
 	
@@ -111,11 +132,13 @@ Below problems are sorted according to their priority. Problem with highest prio
 	assertTrue(hasContent);
 	
 	
-	This way, whenever we see a non-null value, we will cease the search and use assert method and we will not keep searching unnecessarily. Also we should keep "length" and "rowLength" local variables to increase the performance.
+	This way, whenever we see a non-null value, we will cease the search and use assert method and we will not keep searching unnecessarily. 
+	Also we should keep "length" and "rowLength" local variables to increase the performance.
 
 10 -) getBoardState(Board b) method in file BoardLogic.java
 	
-	There are two "for" statements "for(int i = 0; i < b.getFields().length; i++)" and "for (int j = 0; j < b.getFields().length; j++)". We should create a local variable "int length = b.getFields().length;" and use it in "for" statement so we won't have to call getFields() method in every iteration of for loop. (as "i < length").
+	There are two "for" statements "for(int i = 0; i < b.getFields().length; i++)" and "for (int j = 0; j < b.getFields().length; j++)". 
+	We should create a local variable "int length = b.getFields().length;" and use it in "for" statement so we won't have to call getFields() method in every iteration of for loop. (as "i < length").
 			
 11 -) getBoardState(Board b) method in file BoardLogic.java
 	
@@ -134,4 +157,6 @@ Below problems are sorted according to their priority. Problem with highest prio
 
 1 -) Performance of validity check in file BoardLogic.java 
 	
-	This problem has the highest priority because it has a very high impact on system's performance. IsValid() method will probably be called several times, and having an inefficient isValid() method will slow down the system. A complete overhaul is needed to fix isValid() method in order to increase performance and fix the small bug that system does not give any error for completely empty boards.
+	This problem has the highest priority because it has a very high impact on system's performance. 
+	IsValid() method will probably be called several times, and having an inefficient isValid() method will slow down the system. 
+	A complete overhaul is needed to fix isValid() method in order to increase performance and fix the small bug that system does not give any error for completely empty boards.
