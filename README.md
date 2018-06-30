@@ -17,7 +17,8 @@ Below problems are sorted according to their priority. Problem with highest prio
 1 -) Performance of validity check in file BoardLogic.java
 
 	Current system checks for validity of digits(if they are in range of 1-9), cells(3x3 pieces), columns and rows. 
-	Validate column, row and cell method use validatePartial(Integer[] ints) method to ensure that there is no duplicate numbers. 		But this method is works very inefficiently. 
+	Validate column, row and cell method use validatePartial(Integer[] ints) method to ensure that there is no duplicate numbers.
+	But this method is works very inefficiently. 
 	Rather than using a hashset and come up with an O(n) algorithm, for each number, it checks all of the next numbers. 
 	This leads to an O(n^2) algorithm. 
 	Instead of this IsValid() algorithm, the proposed algorithm is; (Please note that we will also keep the list of coordinates that are erroneous)
@@ -51,7 +52,11 @@ Below problems are sorted according to their priority. Problem with highest prio
 	It should be solvable, each location in board should have available number to put into them and each empty location's value should be deducible. 
 	It should only have single solution. And we need to be careful about difficulty of the puzzle.
 	
-	Validity of the puzzle can be guaranteed with using HashSets. Difficulty of the puzzle can be determined by number of deductions the person need to make in order to solve the puzzle. There are different approaches in the literature. Some of them fill the entire board first and remove elements if the board is still solvable. Some of the approaches adds elements until the board is solvable.
+	Validity of the puzzle can be guaranteed with using HashSets. 
+	Difficulty of the puzzle can be determined by number of deductions the person need to make in order to solve the puzzle. 
+	There are different approaches in the literature. 
+	Some of them fill the entire board first and remove elements if the board is still solvable. 
+	Some of the approaches adds elements until the board is solvable.
 	
 3 -) Error list has duplicate items in file BoardLogic.java.
 
@@ -76,7 +81,8 @@ Below problems are sorted according to their priority. Problem with highest prio
 	These two methods test the system for row and column errors. 
 	But it uses coordinates that are also in the same cells. 
 	Program can have a working "cellCheck" method and its "rowCheck" and "columnCheck" methods may not be working. 
-	In this case, program will recognize the cell error, raise the exception, and test method will see this exception and falsely decide that program is running correctly. So this test method will fail. 
+	In this case, program will recognize the cell error, raise the exception, and test method will see this exception and falsely decide that program is running correctly. 
+	So this test method will fail. 
 	
 	Instead for  "shouldErrorOnInvalidBoardRow()" method;
 	
